@@ -4,7 +4,7 @@
   "scripts": {
     "install:all": "npm install && cd backend && npm install && cd ../healthsphere && npm install",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd healthsphere && npm start\"",
-    "build": "npm install && cd healthsphere && npm install && npm run build && cd ../backend && npm install && npm run build",
+    "build": "npm install && cd healthsphere && npm install && npm run build && cd ../backend && npm install",
 
     "start": "cd backend && npm start",
     "db:init": "cd backend && npm run db:init",
