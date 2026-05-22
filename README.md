@@ -34,17 +34,27 @@ npm run db:init
 npm run db:seed
 ```
 
-### 3. Build & Production Start
-1. **Build the Frontend**:
+### 🌐 Render Deployment (Recommended)
+
+1. **Connect your GitHub Repository**: Once connected, Render should automatically detect the `render.yaml` file.
+2. **Apply Blueprint**: Render will prompt you to create the web service and the PostgreSQL database.
+3. **Build Configuration**:
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm start`
+4. **Environment Variables**: Render will fetch most from the `render.yaml`. Ensure `CLIENT_URL` is updated to your Render app URL (e.g., `https://healthsphere.onrender.com`).
+
+### 3. Production Build & Start (Manual)
+1. **Build Everything**:
    ```bash
    npm run build
    ```
-2. **Start the Backend**:
+2. **Start the Backend Server**:
    ```bash
    npm start
    ```
 
 The backend is configured to serve the built frontend assets from `healthsphere/build` when `NODE_ENV=production`.
+
 
 ## 🛠️ Development
 To run both frontend and backend in development mode:

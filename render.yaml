@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: healthsphere
+    runtime: node
+    buildCommand: "npm run build"
+
+    startCommand: "cd backend && npm start"
+    plan: free # Change to starter if needed
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: healthsphere-db
+          property: connectionString
+      - key: CLIENT_URL
+        value: https://healthsphere.onrender.com # Change this to your final URL after first deploy
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: healthsphere-db
+    plan: free # Change to starter if needed
+    databaseName: healthsphere
+    user: admin
