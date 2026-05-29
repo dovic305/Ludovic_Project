@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import API_URL from '../apiConfig';
 
 // Context creation
 const DataContext = createContext(undefined);
@@ -85,13 +86,13 @@ export function DataProvider({ children }) {
 
     if (role === 'doctor') {
       // Fetch appointments for this doctor
-      fetch(`http://localhost:5000/api/doctors/${currentUser.id}/appointments`)
+      fetch(`${API_URL}/api/doctors/${currentUser.id}/appointments`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setAppointments(data); })
         .catch(err => console.error('Failed to fetch appointments:', err));
 
       // Fetch patients for this doctor
-      fetch(`http://localhost:5000/api/doctors/${currentUser.id}/patients`)
+      fetch(`${API_URL}/api/doctors/${currentUser.id}/patients`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setPatients(data); })
         .catch(err => console.error('Failed to fetch doctor patients:', err));
@@ -99,19 +100,19 @@ export function DataProvider({ children }) {
 
     if (role === 'admin' || role === 'nurse') {
       // Fetch all patients
-      fetch('http://localhost:5000/api/admin/patients')
+      fetch(`${API_URL}/api/admin/patients`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setPatients(data); })
         .catch(err => console.error('Failed to fetch patients:', err));
 
       // Fetch all staff
-      fetch('http://localhost:5000/api/admin/staff')
+      fetch(`${API_URL}/api/admin/staff`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setStaff(data); })
         .catch(err => console.error('Failed to fetch staff:', err));
 
       // Fetch all appointments
-      fetch('http://localhost:5000/api/admin/appointments')
+      fetch(`${API_URL}/api/admin/appointments`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setAppointments(data); })
         .catch(err => console.error('Failed to fetch appointments:', err));
@@ -119,7 +120,7 @@ export function DataProvider({ children }) {
     
     if (role === 'patient') {
       // Fetch patient profile
-      fetch(`http://localhost:5000/api/patients/${currentUser.id}/records`)
+      fetch(`${API_URL}/api/patients/${currentUser.id}/records`)
         .then(res => res.json())
         .then(data => {
           if (data && !data.message) {
@@ -134,7 +135,7 @@ export function DataProvider({ children }) {
         .catch(err => console.error('Failed to fetch patient records:', err));
         
       // Fetch patient appointments
-      fetch(`http://localhost:5000/api/appointments/patient/${currentUser.id}`)
+      fetch(`${API_URL}/api/appointments/patient/${currentUser.id}`)
         .then(res => res.json())
         .then(data => { if (Array.isArray(data)) setAppointments(data); })
         .catch(err => console.error('Failed to fetch patient appointments:', err));
@@ -143,7 +144,7 @@ export function DataProvider({ children }) {
 
   const login = async (email, password, role) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, role })
@@ -167,7 +168,7 @@ export function DataProvider({ children }) {
 
   const register = async (formData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -188,7 +189,7 @@ export function DataProvider({ children }) {
 
   const requestResetCode = async (email) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/request-reset-code', {
+      const response = await fetch(`${API_URL}/api/auth/request-reset-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -209,7 +210,7 @@ export function DataProvider({ children }) {
 
   const verifyResetCode = async (email, code) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-code', {
+      const response = await fetch(`${API_URL}/api/auth/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code })
@@ -230,7 +231,7 @@ export function DataProvider({ children }) {
 
   const submitHelpRequest = async (email, subject, message) => {
     try {
-      const response = await fetch('http://localhost:5000/api/help-desk/request', {
+      const response = await fetch(`${API_URL}/api/help-desk/request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, subject, message })
@@ -245,7 +246,7 @@ export function DataProvider({ children }) {
 
   const getHelpRequests = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/help-desk/requests');
+      const response = await fetch(`${API_URL}/api/help-desk/requests`);
       return await response.json();
     } catch (error) {
       console.error('Get help requests error:', error);
@@ -255,7 +256,7 @@ export function DataProvider({ children }) {
 
   const respondToHelpRequest = async (payload) => {
     try {
-      const response = await fetch('http://localhost:5000/api/help-desk/respond', {
+      const response = await fetch(`${API_URL}/api/help-desk/respond`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -270,7 +271,7 @@ export function DataProvider({ children }) {
 
   const checkRequestStatus = async (email) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/help-desk/status/${email}`);
+      const response = await fetch(`${API_URL}/api/help-desk/status/${email}`);
       return await response.json();
     } catch (error) {
       console.error('Check status error:', error);

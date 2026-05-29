@@ -1,6 +1,7 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
 import { Check, X } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './DoctorAppointements.css';
 
 export default function DoctorAppointments() {
@@ -14,7 +15,7 @@ export default function DoctorAppointments() {
   // Status update function (TypeScript type for 'id' and 'status' removed)
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/appointments/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

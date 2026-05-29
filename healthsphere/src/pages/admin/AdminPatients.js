@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Plus, Pencil, Trash2, X, AlertCircle, Search, Key } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './AdminPatients.css';
 
 export default function AdminPatients() {
@@ -50,7 +51,7 @@ export default function AdminPatients() {
     try {
       if (editing) {
         // UPDATE existing patient in DB
-        const response = await fetch(`http://localhost:5000/api/admin/patients/${editing.id}`, {
+        const response = await fetch(`${API_URL}/api/admin/patients/${editing.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form)
@@ -64,7 +65,7 @@ export default function AdminPatients() {
         }
       } else {
         // CREATE new patient in DB
-        const response = await fetch('http://localhost:5000/api/admin/patients', {
+        const response = await fetch(`${API_URL}/api/admin/patients`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...form, password: 'patient123' }) // default password
@@ -102,7 +103,7 @@ export default function AdminPatients() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this patient?')) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/patients/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_URL}/api/admin/patients/${id}`, { method: 'DELETE' });
       if (response.ok) {
         setPatients(prev => prev.filter(p => p.id !== id));
       } else {
@@ -120,7 +121,7 @@ export default function AdminPatients() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/patients/${resetPatient.id}/reset-password`, {
+      const response = await fetch(`${API_URL}/api/admin/patients/${resetPatient.id}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ newPassword })

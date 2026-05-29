@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Plus, Pencil, Trash2, X, AlertCircle, Search } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './AdminStaffs.css';
 
 export default function AdminStaff() {
@@ -44,7 +45,7 @@ export default function AdminStaff() {
 
     try {
       if (editing) {
-        const response = await fetch(`http://localhost:5000/api/admin/staff/${editing.id}`, {
+        const response = await fetch(`${API_URL}/api/admin/staff/${editing.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form)
@@ -57,7 +58,7 @@ export default function AdminStaff() {
           setError(data.message || 'Failed to update staff member');
         }
       } else {
-        const response = await fetch('http://localhost:5000/api/admin/staff', {
+        const response = await fetch(`${API_URL}/api/admin/staff`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...form, password: 'staff123' })
@@ -91,7 +92,7 @@ export default function AdminStaff() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this staff member?')) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/staff/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_URL}/api/admin/staff/${id}`, { method: 'DELETE' });
       if (response.ok) {
         setStaff(prev => prev.filter(s => s.id !== id));
       } else {

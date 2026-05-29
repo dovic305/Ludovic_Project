@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { Search, User, Plus } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './DoctorPatients.css';
 
 export default function DoctorPatients() {
@@ -27,9 +28,9 @@ export default function DoctorPatients() {
       try {
         let res;
         if (currentUser?.role === 'admin' || currentUser?.role === 'nurse') {
-          res = await fetch(`http://localhost:5000/api/admin/patients`);
+          res = await fetch(`${API_URL}/api/admin/patients`);
         } else {
-          res = await fetch(`http://localhost:5000/api/doctors/${currentUserId}/patients`);
+          res = await fetch(`${API_URL}/api/doctors/${currentUserId}/patients`);
         }
         
         const data = await res.json();
@@ -51,7 +52,7 @@ export default function DoctorPatients() {
     if (!selectedPatient) { setPatientDetail(null); return; }
     const fetchDetail = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/patients/${selectedPatient}/records`);
+        const res = await fetch(`${API_URL}/api/patients/${selectedPatient}/records`);
         const data = await res.json();
         setPatientDetail(data);
       } catch (err) {
@@ -81,7 +82,7 @@ export default function DoctorPatients() {
   const addNote = async () => {
     if (!noteText.trim()) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${selectedPatient}/notes`, {
+      const response = await fetch(`${API_URL}/api/patients/${selectedPatient}/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ doctorId: currentUserId, noteText })
@@ -100,7 +101,7 @@ export default function DoctorPatients() {
   const addPrescription = async () => {
     if (!rxMed.trim() || !rxDosage.trim() || !rxFreq.trim()) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${selectedPatient}/prescriptions`, {
+      const response = await fetch(`${API_URL}/api/patients/${selectedPatient}/prescriptions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

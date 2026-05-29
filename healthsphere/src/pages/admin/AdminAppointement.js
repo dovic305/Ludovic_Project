@@ -1,6 +1,7 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
 import { X, Check } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './AdminAppointement.css';
 
 export default function AdminAppointments() {
@@ -9,7 +10,7 @@ export default function AdminAppointments() {
   // Updated to call backend API
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/appointments/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/appointments/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

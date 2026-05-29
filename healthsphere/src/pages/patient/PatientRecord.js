@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { FileText, AlertTriangle, Pill, Stethoscope } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './PatientRecord.css';
 
 export default function PatientRecords() {
@@ -14,7 +15,7 @@ export default function PatientRecords() {
       try {
         // Fallback to ID 5 (John Doe from our seed data) if currentUser.id isn't in DB yet
         const patientId = currentUser?.role === 'patient' && !isNaN(currentUser?.id) ? currentUser.id : 5;
-        const response = await fetch(`http://localhost:5000/api/patients/${patientId}/records`);
+        const response = await fetch(`${API_URL}/api/patients/${patientId}/records`);
         if (!response.ok) {
           throw new Error('Failed to fetch patient records from backend');
         }

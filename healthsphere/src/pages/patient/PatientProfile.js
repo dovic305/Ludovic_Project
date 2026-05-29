@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { User, Save, AlertCircle } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './PatientProfile.css';
 
 export default function PatientProfile() {
@@ -21,7 +22,7 @@ export default function PatientProfile() {
           ? currentUser.id
           : 5;
 
-        const res = await fetch(`http://localhost:5000/api/patients/${patientId}/records`);
+        const res = await fetch(`${API_URL}/api/patients/${patientId}/records`);
         if (!res.ok) throw new Error('Failed to fetch profile');
         const data = await res.json();
         setProfile(data);
@@ -45,7 +46,7 @@ export default function PatientProfile() {
         ? currentUser.id
         : 5;
 
-      const res = await fetch(`http://localhost:5000/api/admin/patients/${patientId}`, {
+      const res = await fetch(`${API_URL}/api/admin/patients/${patientId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
