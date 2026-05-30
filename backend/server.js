@@ -6,8 +6,23 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',  // local React dev server
+  process.env.FRONTEND_URL, // set this in Render backend env vars
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
+}));
 app.use(express.json()); // Parse JSON bodies
+
+
 
 // API Status routes
 app.get('/api/health', (req, res) => {
