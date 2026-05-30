@@ -20,11 +20,12 @@ app.use('/api', routes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../healthsphere/build')));
+  // Set static folder - use process.cwd() to ensure path works from either backend/ or backend/dist/
+  const buildPath = path.join(process.cwd(), '../healthsphere/build');
+  app.use(express.static(buildPath));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../healthsphere', 'build', 'index.html'));
+    res.sendFile(path.join(buildPath, 'index.html'));
   });
 } else {
   app.get('/', (req, res) => {
