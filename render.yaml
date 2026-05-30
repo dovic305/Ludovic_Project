@@ -3,8 +3,7 @@ services:
     name: healthsphere
     runtime: node
     buildCommand: "npm run build"
-
-    startCommand: "cd backend && npm start"
+    startCommand: "npm start"
     plan: free # Change to starter if needed
     envVars:
       - key: NODE_ENV

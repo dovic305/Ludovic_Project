@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "install:all": "npm install && cd backend && npm install && cd ../healthsphere && npm install",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd healthsphere && npm start\"",
-    "build": "npm install && cd healthsphere && npm install && npm run build && cd ../backend && npm install",
-
-    "start": "cd backend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd healthsphere && npm start",
+    "build": "npm install && cd backend && npm install && npm run build && cd ../healthsphere && npm install && npm run build",
+    "start": "cd backend && npm run start:prod",
+    "format": "prettier --write \".**/*.{js,jsx,css,md}\"",
     "db:init": "cd backend && npm run db:init",
     "db:seed": "cd backend && npm run db:seed"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "prettier": "^3.8.3"
   }
 }
