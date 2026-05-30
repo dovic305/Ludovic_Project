@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'production') {
   const buildPath = path.join(process.cwd(), '../healthsphere/build');
   app.use(express.static(buildPath));
 
-  app.get('(.*)', (req, res) => {
+  app.get('*splat', (req, res) => {
     res.sendFile(path.join(buildPath, 'index.html'));
   });
 } else {
