@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "build": "esbuild server.js --bundle --platform=node --target=node20 --outfile=dist/server.js --minify --sourcemap --external:bcryptjs --external:pg",
