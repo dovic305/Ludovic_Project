@@ -10,6 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
 
+app.get('/', (req, res) => {
+  res.send('Here is the staging Branch: stagging In Progresss......')
+});
+
+
 // Basic Route for testing
 app.get('/api/health', (req, res) => {
   res.json({ status: 'success', message: 'HealthSphere API is running' });
