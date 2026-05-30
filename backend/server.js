@@ -15,6 +15,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'success', message: 'HealthSphere API is running' });
 });
 
+app.get('/api/check', (req, res) => {
+  res.json({ status: 'success', message: 'HealthSphere API is running on port 5000' });
+});
+
+
 // Import API routes
 const routes = require('./src/routes');
 app.use('/api', routes);
