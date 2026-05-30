@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { Plus, X, AlertCircle, Check } from 'lucide-react';
+import API_URL from '../../apiConfig';
 import './PatientAppointement.css';
 
 export default function PatientAppointments() {
@@ -27,12 +28,12 @@ export default function PatientAppointments() {
     const fetchData = async () => {
       try {
         // Load this patient's appointments
-        const aptsRes = await fetch(`http://localhost:5000/api/appointments/patient/${patientId}`);
+        const aptsRes = await fetch(`${API_URL}/api/appointments/patient/${patientId}`);
         const aptsData = await aptsRes.json();
         if (Array.isArray(aptsData)) setMyAppointments(aptsData);
 
         // Load all doctors from the admin staff endpoint
-        const staffRes = await fetch('http://localhost:5000/api/admin/staff');
+        const staffRes = await fetch(`${API_URL}/api/admin/staff`);
         const staffData = await staffRes.json();
         if (Array.isArray(staffData)) {
           setDoctors(staffData.filter(s => s.role === 'doctor'));
@@ -63,7 +64,7 @@ export default function PatientAppointments() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/appointments', {
+      const response = await fetch(`${API_URL}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -100,7 +101,7 @@ export default function PatientAppointments() {
     // Only call API if id is a real DB integer
     if (!isNaN(id)) {
       try {
-        await fetch(`http://localhost:5000/api/appointments/${id}/cancel`, { method: 'PATCH' });
+        await fetch(`${API_URL}/api/appointments/${id}/cancel`, { method: 'PATCH' });
       } catch (err) {
         console.error('Cancel error:', err);
       }

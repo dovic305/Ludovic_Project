@@ -6,8 +6,23 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',  // local React dev server
+  process.env.FRONTEND_URL, // set this in Render backend env vars
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
+}));
 app.use(express.json()); // Parse JSON bodies
+
+
 
 // API Status routes
 app.get('/api/health', (req, res) => {
@@ -20,11 +35,12 @@ app.use('/api', routes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../healthsphere/build')));
+  // Set static folder - use process.cwd() to ensure path works from either backend/ or backend/dist/
+  const buildPath = path.join(process.cwd(), '../healthsphere/build');
+  app.use(express.static(buildPath));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../healthsphere', 'build', 'index.html'));
+  app.get('*splat', (req, res) => {
+    res.sendFile(path.join(buildPath, 'index.html'));
   });
 } else {
   app.get('/', (req, res) => {
