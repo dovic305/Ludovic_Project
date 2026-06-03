@@ -1,12 +1,14 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+const isProduction = process.env.NODE_ENV === 'production';
 
 const pool = new Pool(
   process.env.DATABASE_URL
     ? {
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }, // Required for Render PostgreSQL
+        // Only use SSL on Render (production). Local PostgreSQL does not support SSL.
+        ssl: isProduction ? { rejectUnauthorized: false } : false,
       }
     : {
         user: process.env.DB_USER,
