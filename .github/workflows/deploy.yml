@@ -1,0 +1,67 @@
+name: HealthSphere CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get code from GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install Backend Dependencies
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+
+      # Build Backend
+      - name: Build Backend
+        run: |
+          cd backend
+          npm run build
+
+      # Install Frontend Dependencies
+      - name: Install Frontend Dependencies
+        run: |
+          cd healthsphere
+          npm install
+
+      # Build Frontend
+      - name: Build Frontend
+        run: |
+          cd healthsphere
+          npm run build
+        env:
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          CI: false
+
+      # Deploy Backend to Render
+      - name: Deploy Backend
+        run: |
+          curl -X POST \
+          "https://api.render.com/v1/services/${{ secrets.RENDER_BACKEND_SERVICE_ID }}/deploys" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Accept: application/json"
+
+      # Deploy Frontend to Render
+      - name: Deploy Frontend
+        run: |
+          curl -X POST \
+          "https://api.render.com/v1/services/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}/deploys" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Accept: application/json"
+
+      - name: Deployment Complete
+        run: echo "HealthSphere deployed successfully"
